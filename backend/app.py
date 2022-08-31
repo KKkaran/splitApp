@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_restx import Resource, fields, Api
-#from flask_cors import CORS
+from flask_cors import CORS
 app = Flask(__name__)
 
-#CORS(app, resources={r"*": {"origins": "*"}})
+CORS(app, resources={r"*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False    
 
@@ -21,7 +21,7 @@ class User(db.Model):
     date_joined = db.Column(db.Date, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<User:{self.email}>'
+        return f'{self.name}:{self.email}'
 
 class Purchase(db.Model):
     __tablename__ = 'purchase'
@@ -32,6 +32,8 @@ class Purchase(db.Model):
     user = db.relationship(
         'User', backref=db.backref('user', lazy=True))
 
+    def __repr__(self):
+        return f'<Purchase:{self.description},{self.price},{self.user}>'
 
 ##############  serializers  ####################
 user_serializer = api.model('Model', {
@@ -46,6 +48,7 @@ purchase_serializer = api.model('Model', {
     'description': fields.String(required=True, description='The details of a purchase'),
     'price': fields.Integer(required=True, description='The price of a purchase'),
     'user_id': fields.Integer(required=True, description='The unique identifier of a purchaser'),
+    'user':fields.String(required=True, description='The name of user')
 })
 
 ##############  ROUTES  ##################
@@ -66,3 +69,4 @@ class Purchases(Resource):
     @api.marshal_with(purchase_serializer, envelope='resource')
     def get(self):
         return Purchase.query.all()
+
