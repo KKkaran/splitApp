@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import * as request from "../utils/request"
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import PurchaseForm from "./PurchaseForm";
 
 const Purchases = () => {
 
@@ -20,6 +20,9 @@ const Purchases = () => {
 
     return (
         <div className="border border-light p-4 ">
+            <div>
+                <PurchaseForm/>
+            </div>
             <div>
                 <h3>Purchases of September:</h3>
                 <div>

@@ -10,6 +10,7 @@ export async function getAllPurchases() {
     });
     return value.data.resource;
   } catch (error) {
-    console.log("error", error);
+    window.location.href = "/error"
+
   }
 }

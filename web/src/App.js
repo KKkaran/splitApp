@@ -1,13 +1,24 @@
 import './App.css';
 import Purchases from './components/Purchases';
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Error from './components/Error';
+  
 function App() {
+   
   return (
-    <div className="">
-      <header className="">
-        <Purchases/>
-      </header>
-    </div>
+
+    <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<Purchases />}
+          />
+          <Route
+            path="/error"
+            element={<Error />}
+          />
+        </Routes>  
+    </Router>
   );
 }
 
