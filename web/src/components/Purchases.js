@@ -24,15 +24,15 @@ const Purchases = () => {
                 <PurchaseForm/>
             </div>
             <div>
-                <h3>Purchases of September:</h3>
+                <h3 style={{'color':'white'}}>Purchases of September:</h3>
                 <div>
                     {
                         loading ? (
                          <h3>Loading...</h3>
                     ):(
-                            purchase.map((p) => {
+                            purchase.map((p,index) => {
                                 return (
-                                    <div className="card m-2" style={{"width":"18rem"}}>
+                                    <div className="card m-2" key={index} style={{"width":"18rem"}}>
                                         <div className="border border-light p-2 card-body">
                                             <h5 className="card-title">{p.user.split(":")[0]}</h5>
                                             <p className="card-text">{p.description}  ${p.price}</p>
