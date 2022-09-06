@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from crypt import methods
+from urllib import request
+from flask import Flask,request,json, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_restx import Resource, fields, Api
@@ -69,4 +71,32 @@ class Purchases(Resource):
     @api.marshal_with(purchase_serializer, envelope='resource')
     def get(self):
         return Purchase.query.all()
+
+#route for the posting a new purchase
+@app.route('/createPurchase', methods=['POST'])
+def createPurchase():
+    if request.method == 'POST':
+        request_data = json.loads(request.data)
+        purchase = Purchase(description=request_data.get('desc'),price=request_data.get('price'), user_id=request_data.get('id'))
+        db.session.add(purchase)
+        db.session.commit()
+
+        return str(purchase.id)
+
+#route for the posting a new purchase
+@app.route('/createUser', methods=['POST'])
+def createUser():
+    if request.method == 'POST':
+        request_data = json.loads(request.data)
+        user = User(name=request_data.get('name'),email=request_data.get('email'))
+        db.session.add(user)
+        db.session.commit()
+        return str(user.id)
+
+#route for the getting the id of user, filtering by email
+@api.route("/user/<string:email>")
+class UserByEmail(Resource):
+    @api.marshal_with(user_serializer, envelope='resource')
+    def get(self, email):
+        return User.query.filter_by(email=email).all()
 

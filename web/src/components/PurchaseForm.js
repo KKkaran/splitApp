@@ -14,11 +14,35 @@ const PurchaseForm = () => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        
+        let useridd = 0;
         //send the info to first get the id of the user if the user already exists if not, we create
         //a new user and then get the id and create a new purchase in the database
-        let userId = request.createUser(details.name, details.email)
-        console.log(userId)
+        request.getUserByEmail(details.email)
+        .then(data=>{
+            if (data.length == 0){
+                console.log("doesnt exist in db")
+                let userId = request.createUser(details.name, details.email)
+                userId.then(d=>{
+                    console.log("New used created with the id-> ",d)
+                    useridd = d;
+                    setUserId(d)
+                })
+            }else{
+                console.log("exists in db and id is ->", data[0].id)
+                useridd = data[0].id;
+                setUserId(data[0].id)
+            }
+            //once we get the id we create a new purchase with the id
+            console.log({...details,useridd})
+            let purchaseId = request.createPurchase({...details,userid})
+            purchaseId.then(p=>{
+                console.log("New purchase created:",p);
+            })
+        })
+        
+        
+        
+        
       
     }
     return (
