@@ -43,7 +43,7 @@ export async function createUser(name,email) {
 
         return value;
 }
-export async function createPurchase({desc,price,userid}) {
+export async function createPurchase({desc,price},userid) {
   console.log(desc,price,userid)
   let value = await axios.post("http://localhost:3002/createPurchase",  {
           desc:desc,

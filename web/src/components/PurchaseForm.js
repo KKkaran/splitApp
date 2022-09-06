@@ -22,22 +22,24 @@ const PurchaseForm = () => {
             if (data.length == 0){
                 console.log("doesnt exist in db")
                 let userId = request.createUser(details.name, details.email)
-                userId.then(d=>{
-                    console.log("New used created with the id-> ",d)
-                    useridd = d;
-                    setUserId(d)
+                userId.then(userid=>{
+                    console.log("New used created with the id-> ",userid)
+                    request.createPurchase(details,userid)
+                    .then(p=>{
+                    console.log("New purchase created:",p);
+                 })
+                    useridd = userid;
+                    setUserId(userid)
                 })
             }else{
                 console.log("exists in db and id is ->", data[0].id)
                 useridd = data[0].id;
                 setUserId(data[0].id)
+                request.createPurchase(details,useridd)
+                    .then(p=>{
+                    console.log("New purchase created:",p);
+                })
             }
-            //once we get the id we create a new purchase with the id
-            console.log({...details,useridd})
-            let purchaseId = request.createPurchase({...details,userid})
-            purchaseId.then(p=>{
-                console.log("New purchase created:",p);
-            })
         })
         
         

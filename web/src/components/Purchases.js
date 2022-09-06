@@ -34,8 +34,8 @@ const Purchases = () => {
                                 return (
                                     <div className="card m-2" key={index} style={{"width":"18rem"}}>
                                         <div className="border border-light p-2 card-body">
-                                            <h5 className="card-title">{p.user.split(":")[0]}</h5>
-                                            <p className="card-text">{p.description}  ${p.price}</p>
+                                            {//<h5 className="card-title">{p.user.split(":")[0]}</h5>}
+                                            }<p className="card-text">{p.description}  ${p.price}</p>
                                         </div>
                                     </div>
                                 )
